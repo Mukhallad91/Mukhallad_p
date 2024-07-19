@@ -1,34 +1,39 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_HOME = tool name: 'NodeJS 14.x', type: 'NodeJSInstallation'
-        PATH = "${NODE_HOME}/bin:${env.PATH}"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Mukhallad91/Mukhallad_p.git', credentialsId: 'github-token'
+                git 'https://github.com/your-repo.git'
             }
         }
-        
+
+        stage('Install Node.js') {
+            steps {
+                sh '''
+                #!/bin/bash
+                export NVM_DIR="$HOME/.nvm"
+                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+                nvm install 22.5.1
+                nvm use 22.5.1
+                node -v
+                npm -v
+                '''
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                script {
-                    dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
-                        bat 'npm install'
-                    }
+                dir('C:/Users/pp/Desktop/Mukhallad Project') {
+                    sh 'npm install'
                 }
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-                script {
-                    dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
-                        bat 'npx playwright test'
-                    }
+                dir('C:/Users/pp/Desktop/Mukhallad Project') {
+                    sh 'npx playwright test'
                 }
             }
         }
