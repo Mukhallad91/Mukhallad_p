@@ -7,12 +7,17 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/Mukhallad91/Mukhallad_p.git', credentialsId: 'github-token'
+            }
+        }
+        
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Change to project directory
                     dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
-                        sh 'npm install'
+                        bat 'npm install'
                     }
                 }
             }
@@ -21,9 +26,8 @@ pipeline {
         stage('Run Playwright Tests') {
             steps {
                 script {
-                    // Change to project directory
                     dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
-                        sh 'npx playwright test'
+                        bat 'npx playwright test'
                     }
                 }
             }
@@ -32,8 +36,8 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'test-results/**/*.png', allowEmptyArchive: true
-            junit 'test-results/**/*.xml'
+            archiveArtifacts artifacts: '**/test-results/**/*.png', allowEmptyArchive: true
+            junit '**/test-results/**/*.xml'
         }
         success {
             echo 'Tests passed!'
