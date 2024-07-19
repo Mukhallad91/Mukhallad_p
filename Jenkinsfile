@@ -1,39 +1,38 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS 22.5.1' // Ensure this matches the name you configured in Global Tool Configuration
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo.git'
-            }
-        }
-
-        stage('Install Node.js') {
-            steps {
-                sh '''
-                #!/bin/bash
-                export NVM_DIR="$HOME/.nvm"
-                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-                nvm install 22.5.1
-                nvm use 22.5.1
-                node -v
-                npm -v
-                '''
+                script {
+                    // Checkout the repository
+                    git 'https://github.com/Mukhallad91/Mukhallad_p.git'
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                dir('C:/Users/pp/Desktop/Mukhallad Project') {
-                    sh 'npm install'
+                script {
+                    // Change to project directory and install dependencies
+                    dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
+                        bat 'npm install'
+                    }
                 }
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-                dir('C:/Users/pp/Desktop/Mukhallad Project') {
-                    sh 'npx playwright test'
+                script {
+                    // Change to project directory and run Playwright tests
+                    dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
+                        bat 'npx playwright test'
+                    }
                 }
             }
         }
@@ -41,14 +40,21 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: '**/test-results/**/*.png', allowEmptyArchive: true
-            junit '**/test-results/**/*.xml'
+            script {
+                // Archive test results
+                archiveArtifacts artifacts: '**/test-results/**/*.png', allowEmptyArchive: true
+                junit '**/test-results/**/*.xml'
+            }
         }
         success {
-            echo 'Tests passed!'
+            script {
+                echo 'Tests passed!'
+            }
         }
         failure {
-            echo 'Tests failed!'
+            script {
+                echo 'Tests failed!'
+            }
         }
     }
 }
