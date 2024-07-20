@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Change to project directory and install dependencies
-                    dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
+                    dir('C:\Users\pp\Desktop\Mukhallad Project') {
                         bat 'npm install'
                     }
                 }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     // Change to project directory and run Playwright tests
-                    dir('C:\\Users\\pp\\Desktop\\Mukhallad Project') {
+                    dir('C:\Users\pp\Desktop\Mukhallad Project') {
                         bat 'npx playwright test'
                     }
                 }
