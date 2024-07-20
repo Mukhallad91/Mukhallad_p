@@ -21,6 +21,7 @@ pipeline {
                     // Change to project directory and install dependencies
                     dir('C:/Users/pp/Desktop/Mukhallad Project') {
                         bat 'npm install'
+                        bat 'npx playwright install'
                     }
                 }
             }
