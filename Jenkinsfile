@@ -42,9 +42,9 @@ pipeline {
     post {
         always {
             script {
-                // Archive test results
-                archiveArtifacts artifacts: '**/test-results/**/*.png', allowEmptyArchive: true
-                junit '**/test-results/**/*.xml'
+                // Archive test results and artifacts
+                archiveArtifacts artifacts: 'test-results/**/*.png', allowEmptyArchive: true
+                junit 'test-results/results.xml'
             }
         }
         success {

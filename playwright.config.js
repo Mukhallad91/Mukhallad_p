@@ -1,17 +1,30 @@
-// playwright.config.js
-require('dotenv').config();
-const { defineConfig } = require('@playwright/test');
+const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests',
-  retries: 1,
-  workers: 1,
+  reporter: [
+    ['list'],
+    ['junit', { outputFile: 'test-results/results.xml' }],
+    ['html', { open: 'never', outputFolder: 'test-results/report' }]
+  ],
   use: {
-    headless: true,
-    baseURL: process.env.URL,
-    viewport: { width: 1280, height: 720 },
-    actionTimeout: 0,
-    ignoreHTTPSErrors: true,
+    // All tests run with this configuration.
+    trace: 'on',
+    screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
 });
